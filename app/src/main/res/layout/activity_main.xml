@@ -11,12 +11,31 @@
     tools:context="com.example.charleychau.myapplication.MainActivity">
 
     <Button
+        android:text="Tutorial"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tutorialButton"
+        style="@android:style/Widget.Material.Light.Button.Borderless"
+        android:layout_centerVertical="true"
+        android:layout_alignStart="@+id/playButton" />
+
+    <Button
+        android:text="Settings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/settingsButton"
+        style="@android:style/Widget.Material.Light.Button.Borderless"
+        android:layout_below="@+id/tutorialButton"
+        android:layout_alignStart="@+id/tutorialButton"
+        android:layout_marginTop="18dp" />
+
+    <Button
         android:text="Play!"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="144dp"
         android:id="@+id/playButton"
-        style="@android:style/Widget.Material.Light.Button.Borderless" />
+        style="@android:style/Widget.Material.Light.Button.Borderless"
+        android:layout_above="@+id/tutorialButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="13dp" />
 </RelativeLayout>
