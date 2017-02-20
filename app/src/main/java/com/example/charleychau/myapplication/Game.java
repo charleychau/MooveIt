@@ -71,10 +71,10 @@ public class Game extends AppCompatActivity {
             }
         }.start();
         initializeGesture(randomGenerator());
-        /**boolean continuePlaying = false;
+        boolean continuePlaying = false;
         while(continuePlaying) {
             initializeGesture(randomGenerator());
-        } **/
+        } 
 
     }
 
