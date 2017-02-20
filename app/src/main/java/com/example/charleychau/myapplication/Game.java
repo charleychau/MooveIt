@@ -35,7 +35,7 @@ public class Game extends AppCompatActivity {
             public void onFinish() {
                 mTextField.setText("Mooove IT!");
                 RelativeLayout layout =(RelativeLayout)findViewById(R.id.activity_game);
-                layout.setBackgroundResource(R.drawable.background);
+                layout.setBackgroundResource(R.drawable.game_background);
                 mTextField.postDelayed(new Runnable(){
                     public void run(){
                         mTextField.setVisibility(View.INVISIBLE);
@@ -64,7 +64,7 @@ public class Game extends AppCompatActivity {
                 gestureInstruction.setText("Draw a circle around the sheep!");
                 break;
             case 2:
-                gestureInstruction.setText("Swipe the horse");
+                gestureInstruction.setText("Swipe the chicken");
                 break;
             case 3:
                 gestureInstruction.setText("do anything!");
