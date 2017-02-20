@@ -39,12 +39,13 @@
         android:layout_centerHorizontal="true"
         android:textSize="18sp" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/chicken"
-        android:layout_marginTop="18dp"
-        android:id="@+id/imageView"
+    <TextView
+        android:text="TextView"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
+        android:id="@+id/textView2"
         android:layout_below="@+id/gestureInstruction"
-        android:layout_alignParentStart="true" />
+        android:layout_alignStart="@+id/gestureInstruction" />
+
+
 </RelativeLayout>

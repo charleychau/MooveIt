@@ -29,6 +29,7 @@ public class Game extends AppCompatActivity {
     private TextView mTextField;
     private TextView score;
     private TextView gestureInstruction;
+    private TextView testGestureText;
     private ImageView imageView;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -40,9 +41,10 @@ public class Game extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-        //imageView.setVisibility(View.INVISIBLE);
         mTextField = (TextView) findViewById(R.id.playTimer);
         score = (TextView) findViewById(R.id.scoreView);
+        testGestureText = (TextView) findViewById(R.id.textView2);
+        testGestureText.setText("");
         gestureInstruction = (TextView) findViewById(R.id.gestureInstruction);
         gestureInstruction.setVisibility(View.INVISIBLE);
         score.setVisibility(View.INVISIBLE);
@@ -68,8 +70,11 @@ public class Game extends AppCompatActivity {
 
             }
         }.start();
-
         initializeGesture(randomGenerator());
+        /**boolean continuePlaying = false;
+        while(continuePlaying) {
+            initializeGesture(randomGenerator());
+        } **/
 
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -80,23 +85,20 @@ public class Game extends AppCompatActivity {
     private int randomGenerator() {
         return (1 + (int) (Math.random() * ((3 - 1) + 1)));
     }
-
     private void initializeGesture(int gestureNumber) {
         switch (gestureNumber) {
             case 1:
-                gestureInstruction.setText("Draw left!");
-                //imageView.setVisibility(View.VISIBLE);
+                gestureInstruction.setText("Swipe left on horse!");
                 gestureInstruction.setOnTouchListener(new OnSwipeTouchListener(Game.this) {
                     @Override
                     public void onSwipeLeft() {
-                        Toast.makeText(Game.this, "Great job!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Game.this, "Fatastic!", Toast.LENGTH_SHORT).show();
                     }
                 });
                 break;
             case 2:
-                gestureInstruction.setText("Swipe right!");
-                //imageView.setVisibility(View.VISIBLE);
-                gestureInstruction.setOnTouchListener(new OnSwipeTouchListener(Game.this) {
+                gestureInstruction.setText("Swipe right on the chicken!");
+                testGestureText.setOnTouchListener(new OnSwipeTouchListener(Game.this) {
                     @Override
                     public void onSwipeRight() {
                         Toast.makeText(Game.this, "Great job!", Toast.LENGTH_SHORT).show();
@@ -104,9 +106,14 @@ public class Game extends AppCompatActivity {
                 });
                 break;
             case 3:
-                gestureInstruction.setText("do anything!");
+                gestureInstruction.setText("Swipe down on the egg!");
                 //imageView.setVisibility(View.VISIBLE);
-                gestureInstruction.setOnTouchListener(new OnSwipeTouchListener(Game.this));
+                testGestureText.setOnTouchListener(new OnSwipeTouchListener(Game.this) {
+                    @Override
+                    public void onSwipeDown() {
+                        Toast.makeText(Game.this, "You did good!", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
                 break;
         }
@@ -120,11 +127,19 @@ public class Game extends AppCompatActivity {
         }
 
         public void onSwipeLeft() {
-            Toast.makeText(Game.this, "You failed!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Game.this, "You swiped left!", Toast.LENGTH_SHORT).show();
         }
 
         public void onSwipeRight() {
-            Toast.makeText(Game.this, "You failed!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Game.this, "You swiped right!", Toast.LENGTH_SHORT).show();
+        }
+
+        public void onSwipeDown() {
+            Toast.makeText(Game.this, "You swiped down!", Toast.LENGTH_SHORT).show();
+        }
+
+        public void onSwipeUp() {
+            Toast.makeText(Game.this, "You swiped up!", Toast.LENGTH_SHORT).show();
         }
 
         public boolean onTouch(View v, MotionEvent event) {
@@ -138,6 +153,7 @@ public class Game extends AppCompatActivity {
 
             @Override
             public boolean onDown(MotionEvent e) {
+                //onSwipeDown();
                 return true;
             }
 
@@ -145,7 +161,18 @@ public class Game extends AppCompatActivity {
             public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
                 float distanceX = e2.getX() - e1.getX();
                 float distanceY = e2.getY() - e1.getY();
-                if (Math.abs(distanceX) > Math.abs(distanceY) && Math.abs(distanceX) > SWIPE_DISTANCE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                float absoluteX = Math.abs(distanceX);
+                float absoluteY = Math.abs(distanceY);
+                if(absoluteY > SWIPE_DISTANCE_THRESHOLD  && absoluteX <absoluteY && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD ){
+                    if(distanceY >0){
+                        onSwipeDown();
+                    }
+                    else {
+                        onSwipeUp();
+                    }
+                    return true;
+                }
+                if (absoluteX > absoluteY && absoluteX > SWIPE_DISTANCE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
                     if (distanceX > 0)
                         onSwipeRight();
                     else
