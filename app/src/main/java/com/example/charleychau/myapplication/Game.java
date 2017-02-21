@@ -176,7 +176,6 @@ public class Game extends AppCompatActivity {
                         initializeGesture(randomGenerator(3));
                     }
                 }.start();
-                //initializeGesture(randomGenerator(3));
             }
             else {
                 Toast.makeText(Game.this, "You failed!", Toast.LENGTH_SHORT).show();
