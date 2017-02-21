@@ -1,6 +1,7 @@
 package com.example.charleychau.myapplication;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.CountDownTimer;
 import android.support.v4.view.MotionEventCompat;
@@ -25,12 +26,13 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import java.util.Random;
 
 public class Game extends AppCompatActivity {
-
     private TextView mTextField;
     private TextView score;
     private TextView gestureInstruction;
     private TextView testGestureText;
-    private ImageView imageView;
+    public static int currentScore;
+    private ImageView imageview;
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -45,9 +47,13 @@ public class Game extends AppCompatActivity {
         score = (TextView) findViewById(R.id.scoreView);
         testGestureText = (TextView) findViewById(R.id.textView2);
         testGestureText.setText("");
+        imageview = (ImageView) findViewById(R.id.imageView);
+        imageview.setVisibility(View.INVISIBLE);
         gestureInstruction = (TextView) findViewById(R.id.gestureInstruction);
         gestureInstruction.setVisibility(View.INVISIBLE);
         score.setVisibility(View.INVISIBLE);
+        currentScore = 0;
+        score.setText(String.valueOf(currentScore));
         new CountDownTimer(4000, 1000) {
 
             public void onTick(long millisUntilFinished) {
@@ -70,72 +76,125 @@ public class Game extends AppCompatActivity {
 
             }
         }.start();
-        initializeGesture(randomGenerator());
-        boolean continuePlaying = false;
-        while(continuePlaying) {
-            initializeGesture(randomGenerator());
-        } 
+        imageview.setVisibility(View.VISIBLE);
+        initializeGesture(randomGenerator(0));
+
+
 
     }
-
-    private int randomGenerator() {
-        return (1 + (int) (Math.random() * ((3 - 1) + 1)));
+    private int randomGenerator(int avoidGestureNumber) {
+        int randomGesture = (1 + (int) (Math.random() * ((3 - 1) + 1)));
+        while(randomGesture ==avoidGestureNumber){
+            randomGesture = (1 + (int) (Math.random() * ((3 - 1) + 1)));
+        }
+        return randomGesture;
     }
     private void initializeGesture(int gestureNumber) {
         switch (gestureNumber) {
             case 1:
-                gestureInstruction.setText("Swipe left on horse!");
-                gestureInstruction.setOnTouchListener(new OnSwipeTouchListener(Game.this) {
-                    @Override
-                    public void onSwipeLeft() {
-                        Toast.makeText(Game.this, "Fatastic!", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                gestureInstruction.setText("Swipe left on the sheep!");
+                imageview.setImageResource(R.drawable.sheep_unherded);
+                testGestureText.setOnTouchListener(new OnSwipeTouchListener(Game.this, 1));
                 break;
             case 2:
                 gestureInstruction.setText("Swipe right on the chicken!");
-                testGestureText.setOnTouchListener(new OnSwipeTouchListener(Game.this) {
-                    @Override
-                    public void onSwipeRight() {
-                        Toast.makeText(Game.this, "Great job!", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                imageview.setImageResource(R.drawable.chicken);
+                testGestureText.setOnTouchListener(new OnSwipeTouchListener(Game.this, 2));
                 break;
             case 3:
                 gestureInstruction.setText("Swipe down on the egg!");
-                //imageView.setVisibility(View.VISIBLE);
-                testGestureText.setOnTouchListener(new OnSwipeTouchListener(Game.this) {
-                    @Override
-                    public void onSwipeDown() {
-                        Toast.makeText(Game.this, "You did good!", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
+                imageview.setImageResource(R.drawable.egg);
+                testGestureText.setOnTouchListener(new OnSwipeTouchListener(Game.this, 3));
                 break;
         }
 }
     public class OnSwipeTouchListener implements OnTouchListener {
 
         private final GestureDetector gestureDetector;
+        private int gestureNumber;
 
-        public OnSwipeTouchListener(Context context) {
+        public OnSwipeTouchListener(Context context, int number) {
             gestureDetector = new GestureDetector(context, new GestureListener());
+            gestureNumber = number;
         }
 
         public void onSwipeLeft() {
-            Toast.makeText(Game.this, "You swiped left!", Toast.LENGTH_SHORT).show();
+            if(gestureNumber ==1){
+                imageview.setImageResource(R.drawable.sheep_herded);
+                new CountDownTimer(500, 250) { // 5000 = 5 sec
+
+                    public void onTick(long millisUntilFinished) {
+                    }
+
+                    public void onFinish() {
+                        currentScore += 100;
+                        score.setText(String.valueOf(currentScore));
+                        initializeGesture(randomGenerator(1));
+                    }
+                }.start();
+            }
+            else {
+                Toast.makeText(Game.this, "You failed!", Toast.LENGTH_SHORT).show();
+                Intent exitGame = new Intent (Game.this, MainActivity.class);
+                startActivity(exitGame);
+            }
         }
 
         public void onSwipeRight() {
-            Toast.makeText(Game.this, "You swiped right!", Toast.LENGTH_SHORT).show();
+            if(gestureNumber ==2){
+                imageview.setImageResource(R.drawable.fish);
+                new CountDownTimer(500, 250) { // 5000 = 5 sec
+
+                    public void onTick(long millisUntilFinished) {
+                    }
+
+                    public void onFinish() {
+                        currentScore += 100;
+                        score.setText(String.valueOf(currentScore));
+                        initializeGesture(randomGenerator(2));
+                    }
+                }.start();
+            }
+            else {
+                Toast.makeText(Game.this, "You failed!", Toast.LENGTH_SHORT).show();
+                Intent exitGame = new Intent (Game.this, MainActivity.class);
+                startActivity(exitGame);
+            }
         }
 
         public void onSwipeDown() {
-            Toast.makeText(Game.this, "You swiped down!", Toast.LENGTH_SHORT).show();
+            if(gestureNumber ==3){
+                imageview.setImageResource(R.drawable.golden_egg);
+                new CountDownTimer(500, 250) { // 5000 = 5 sec
+
+                    public void onTick(long millisUntilFinished) {
+                    }
+
+                    public void onFinish() {
+                        currentScore += 100;
+                        score.setText(String.valueOf(currentScore));
+                        initializeGesture(randomGenerator(3));
+                    }
+                }.start();
+                //initializeGesture(randomGenerator(3));
+            }
+            else {
+                Toast.makeText(Game.this, "You failed!", Toast.LENGTH_SHORT).show();
+                Intent exitGame = new Intent (Game.this, MainActivity.class);
+                startActivity(exitGame);
+            }
         }
 
         public void onSwipeUp() {
-            Toast.makeText(Game.this, "You swiped up!", Toast.LENGTH_SHORT).show();
+            if(gestureNumber ==4){
+                Toast.makeText(Game.this, "You swiped up!", Toast.LENGTH_SHORT).show();
+                initializeGesture(randomGenerator(4));
+            }
+            else {
+                Toast.makeText(Game.this, "You failed!", Toast.LENGTH_SHORT).show();
+                Intent exitGame = new Intent (Game.this, MainActivity.class);
+                startActivity(exitGame);
+            }
         }
 
         public boolean onTouch(View v, MotionEvent event) {
