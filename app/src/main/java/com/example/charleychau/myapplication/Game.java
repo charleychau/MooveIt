@@ -88,7 +88,7 @@ public class Game extends AppCompatActivity {
                 gestureInstruction.setOnTouchListener(new OnSwipeTouchListener(Game.this) {
                     @Override
                     public void onSwipeLeft() {
-                        Toast.makeText(Game.this, "Fatastic!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Game.this, "Fantastic!", Toast.LENGTH_SHORT).show();
                     }
                 });
                 break;
