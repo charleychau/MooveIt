@@ -74,14 +74,14 @@ public class Game extends AppCompatActivity {
                         gestureInstruction.setVisibility(View.VISIBLE);
                         score.setText("0");
                         score.setVisibility(View.VISIBLE);
-
+                        imageview.setVisibility(View.VISIBLE);
+                        initializeGesture(randomGenerator(0));
                     }
                 }, 1000);
 
             }
         }.start();
-        imageview.setVisibility(View.VISIBLE);
-        initializeGesture(randomGenerator(0));
+
 
 
 
