@@ -2,6 +2,7 @@ package com.example.charleychau.myapplication;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.net.Uri;
 import android.os.CountDownTimer;
 import android.support.v4.view.MotionEventCompat;
@@ -17,14 +18,14 @@ import android.view.MotionEvent;
 import android.view.View.OnTouchListener;
 import android.widget.Toast;
 
-
+/*
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.Random;
-
+*/
 public class Game extends AppCompatActivity {
     private TextView mTextField;
     private TextView score;
@@ -32,12 +33,13 @@ public class Game extends AppCompatActivity {
     private TextView testGestureText;
     public static int currentScore;
     private ImageView imageview;
+    private ImageView checkmark;
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
-    private GoogleApiClient client;
+    //private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +50,9 @@ public class Game extends AppCompatActivity {
         testGestureText = (TextView) findViewById(R.id.textView2);
         testGestureText.setText("");
         imageview = (ImageView) findViewById(R.id.imageView);
+        checkmark = (ImageView) findViewById(R.id.checkmark);
         imageview.setVisibility(View.INVISIBLE);
+        checkmark.setVisibility(View.INVISIBLE);
         gestureInstruction = (TextView) findViewById(R.id.gestureInstruction);
         gestureInstruction.setVisibility(View.INVISIBLE);
         score.setVisibility(View.INVISIBLE);
@@ -61,7 +65,7 @@ public class Game extends AppCompatActivity {
             }
 
             public void onFinish() {
-                mTextField.setText("Mooove IT!");
+                mTextField.setText("Moove It!");
                 RelativeLayout layout = (RelativeLayout) findViewById(R.id.activity_game);
                 layout.setBackgroundResource(R.drawable.game_background);
                 mTextField.postDelayed(new Runnable() {
@@ -70,14 +74,14 @@ public class Game extends AppCompatActivity {
                         gestureInstruction.setVisibility(View.VISIBLE);
                         score.setText("0");
                         score.setVisibility(View.VISIBLE);
-
+                        imageview.setVisibility(View.VISIBLE);
+                        initializeGesture(randomGenerator(0));
                     }
                 }, 1000);
 
             }
         }.start();
-        imageview.setVisibility(View.VISIBLE);
-        initializeGesture(randomGenerator(0));
+
 
 
 
@@ -92,7 +96,7 @@ public class Game extends AppCompatActivity {
     private void initializeGesture(int gestureNumber) {
         switch (gestureNumber) {
             case 1:
-                gestureInstruction.setText("Swipe left on the sheep!");
+                gestureInstruction.setText("Herd the sheep!");
                 imageview.setImageResource(R.drawable.sheep_unherded);
                 testGestureText.setOnTouchListener(new OnSwipeTouchListener(Game.this, 1));
                 break;
@@ -121,7 +125,8 @@ public class Game extends AppCompatActivity {
         public void onSwipeLeft() {
             if(gestureNumber ==1){
                 imageview.setImageResource(R.drawable.sheep_herded);
-                new CountDownTimer(500, 250) { // 5000 = 5 sec
+                checkmark.setVisibility(View.VISIBLE);
+                new CountDownTimer(750, 250) { // 5000 = 5 sec
 
                     public void onTick(long millisUntilFinished) {
                     }
@@ -129,13 +134,14 @@ public class Game extends AppCompatActivity {
                     public void onFinish() {
                         currentScore += 100;
                         score.setText(String.valueOf(currentScore));
+                        checkmark.setVisibility(View.INVISIBLE);
                         initializeGesture(randomGenerator(1));
                     }
                 }.start();
             }
             else {
-                Toast.makeText(Game.this, "You failed!", Toast.LENGTH_SHORT).show();
-                Intent exitGame = new Intent (Game.this, MainActivity.class);
+                Intent exitGame = new Intent (Game.this, EndGame.class);
+                exitGame.putExtra("finalScore", currentScore);
                 startActivity(exitGame);
             }
         }
@@ -143,7 +149,8 @@ public class Game extends AppCompatActivity {
         public void onSwipeRight() {
             if(gestureNumber ==2){
                 imageview.setImageResource(R.drawable.fish);
-                new CountDownTimer(500, 250) { // 5000 = 5 sec
+                checkmark.setVisibility(View.VISIBLE);
+                new CountDownTimer(750, 250) { // 5000 = 5 sec
 
                     public void onTick(long millisUntilFinished) {
                     }
@@ -151,13 +158,14 @@ public class Game extends AppCompatActivity {
                     public void onFinish() {
                         currentScore += 100;
                         score.setText(String.valueOf(currentScore));
+                        checkmark.setVisibility(View.INVISIBLE);
                         initializeGesture(randomGenerator(2));
                     }
                 }.start();
             }
             else {
-                Toast.makeText(Game.this, "You failed!", Toast.LENGTH_SHORT).show();
-                Intent exitGame = new Intent (Game.this, MainActivity.class);
+                Intent exitGame = new Intent (Game.this, EndGame.class);
+                exitGame.putExtra("finalScore", currentScore);
                 startActivity(exitGame);
             }
         }
@@ -165,7 +173,8 @@ public class Game extends AppCompatActivity {
         public void onSwipeDown() {
             if(gestureNumber ==3){
                 imageview.setImageResource(R.drawable.golden_egg);
-                new CountDownTimer(500, 250) { // 5000 = 5 sec
+                checkmark.setVisibility(View.VISIBLE);
+                new CountDownTimer(750, 250) { // 5000 = 5 sec
 
                     public void onTick(long millisUntilFinished) {
                     }
@@ -173,13 +182,14 @@ public class Game extends AppCompatActivity {
                     public void onFinish() {
                         currentScore += 100;
                         score.setText(String.valueOf(currentScore));
+                        checkmark.setVisibility(View.INVISIBLE);
                         initializeGesture(randomGenerator(3));
                     }
                 }.start();
             }
             else {
-                Toast.makeText(Game.this, "You failed!", Toast.LENGTH_SHORT).show();
-                Intent exitGame = new Intent (Game.this, MainActivity.class);
+                Intent exitGame = new Intent (Game.this, EndGame.class);
+                exitGame.putExtra("finalScore", currentScore);
                 startActivity(exitGame);
             }
         }
@@ -190,8 +200,8 @@ public class Game extends AppCompatActivity {
                 initializeGesture(randomGenerator(4));
             }
             else {
-                Toast.makeText(Game.this, "You failed!", Toast.LENGTH_SHORT).show();
-                Intent exitGame = new Intent (Game.this, MainActivity.class);
+                Intent exitGame = new Intent (Game.this, EndGame.class);
+                exitGame.putExtra("finalScore", currentScore);
                 startActivity(exitGame);
             }
         }

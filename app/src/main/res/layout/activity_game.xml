@@ -53,8 +53,18 @@
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/chicken"
         android:id="@+id/imageView"
+        android:layout_marginBottom="79dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/gestureInstruction" />
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/checkmark"
+        android:id="@+id/checkmark"
+        android:layout_alignStart="@+id/imageView"
+        android:layout_above="@+id/gestureInstruction"
+        android:layout_alignEnd="@+id/imageView" />
 
 
 </RelativeLayout>
