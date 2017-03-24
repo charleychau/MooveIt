@@ -15,7 +15,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Game" />
+        <activity android:name=".Game"
+            android:screenOrientation="portrait" />
         <activity android:name=".Tutorial" />
         <activity android:name=".Settings" />
         <!--
@@ -27,6 +28,13 @@
             android:value="@integer/google_play_services_version" />
 
         <activity android:name=".EndGame"></activity>
+        <uses-feature
+            android:name="android.hardware.sensor.proximity"
+            android:required="true" />
+        <uses-feature
+            android:name="android.hardware.sensor.gyroscope"
+            android:required="true" />
+
     </application>
 
 </manifest>
