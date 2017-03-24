@@ -35,7 +35,7 @@ public class Game extends AppCompatActivity {
     private ImageView imageview;
     private ImageView checkmark;
     public static int currentScore;
-    public int beginConstraint = 5250;
+    public int beginConstraint = 5200;
     public static int ENDCONSTRAINT = 2000;
     public boolean responded = false;
 
