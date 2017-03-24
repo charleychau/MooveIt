@@ -254,14 +254,14 @@ public class Game extends AppCompatActivity {
                 break;
             case 4: // Swipe Up
                 gestureInstruction.setText("Feed the chicken!");
-                imageview.setImageResource(R.drawable.chicken_hungry);
+                imageview.setImageResource(R.drawable.pre_feeding_chicken);
                 //testGestureText.setOnTouchListener(new OnSwipeTouchListener(Game.this, 4));
 
                 new CountDownTimer(beginConstraint, 1) {
                     public void onTick(long millisUntilFinished) {
                     }
                     public void onFinish() {
-                        imageview.setImageResource(R.drawable.chicken_eating);
+                        imageview.setImageResource(R.drawable.post_feeding_chicken);
                         checkmark.setVisibility(View.VISIBLE);
 
                         new CountDownTimer(750, 250) { // 5000 = 5 sec
