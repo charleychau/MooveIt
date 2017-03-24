@@ -546,7 +546,7 @@ public class Game extends AppCompatActivity {
         }
     }
 
-    public class OnSwipeTouchListener implements OnTouchListener {
+    /*public class OnSwipeTouchListener implements OnTouchListener {
 
         private final GestureDetector gestureDetector;
         private int gestureNumber;
@@ -705,5 +705,5 @@ public class Game extends AppCompatActivity {
                 return false;
             }
         }
-    }
+    }*/
 }
