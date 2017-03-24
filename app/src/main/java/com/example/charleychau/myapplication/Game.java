@@ -143,7 +143,8 @@ public class Game extends AppCompatActivity {
                                 score.setText(String.valueOf(currentScore));
                                 checkmark.setVisibility(View.INVISIBLE);
                                 responded = false;
-                                initializeGesture(randomGenerator(1));
+                                //initializeGesture(randomGenerator(1));
+                                initializeGesture(2);
                             }
                         }.start();
                     }
@@ -185,7 +186,8 @@ public class Game extends AppCompatActivity {
                                 score.setText(String.valueOf(currentScore));
                                 checkmark.setVisibility(View.INVISIBLE);
                                 responded = false;
-                                initializeGesture(randomGenerator(2));
+                                //initializeGesture(randomGenerator(2));
+                                initializeGesture(3);
                             }
                         }.start();
                     }
@@ -227,7 +229,8 @@ public class Game extends AppCompatActivity {
                                 score.setText(String.valueOf(currentScore));
                                 checkmark.setVisibility(View.INVISIBLE);
                                 responded = false;
-                                initializeGesture(randomGenerator(3));
+                                //initializeGesture(randomGenerator(3));
+                                initializeGesture(4);
                             }
                         }.start();
                     }
@@ -269,7 +272,8 @@ public class Game extends AppCompatActivity {
                                 score.setText(String.valueOf(currentScore));
                                 checkmark.setVisibility(View.INVISIBLE);
                                 responded = false;
-                                initializeGesture(randomGenerator(4));
+                                //initializeGesture(randomGenerator(4));
+                                initializeGesture(5);
                             }
                         }.start();
                     }
@@ -311,7 +315,8 @@ public class Game extends AppCompatActivity {
                                 score.setText(String.valueOf(currentScore));
                                 checkmark.setVisibility(View.INVISIBLE);
                                 responded = false;
-                                initializeGesture(randomGenerator(5));
+                                //initializeGesture(randomGenerator(5));
+                                initializeGesture(6);
                             }
                         }.start();
                     }
@@ -353,7 +358,8 @@ public class Game extends AppCompatActivity {
                                 score.setText(String.valueOf(currentScore));
                                 checkmark.setVisibility(View.INVISIBLE);
                                 responded = false;
-                                initializeGesture(randomGenerator(6));
+                                //initializeGesture(randomGenerator(6));
+                                initializeGesture(7);
                             }
                         }.start();
                     }
@@ -395,7 +401,8 @@ public class Game extends AppCompatActivity {
                                 score.setText(String.valueOf(currentScore));
                                 checkmark.setVisibility(View.INVISIBLE);
                                 responded = false;
-                                initializeGesture(randomGenerator(7));
+                                //initializeGesture(randomGenerator(7));
+                                initializeGesture(8);
                             }
                         }.start();
                     }
@@ -437,7 +444,8 @@ public class Game extends AppCompatActivity {
                                 score.setText(String.valueOf(currentScore));
                                 checkmark.setVisibility(View.INVISIBLE);
                                 responded = false;
-                                initializeGesture(randomGenerator(8));
+                                //initializeGesture(randomGenerator(8));
+                                initializeGesture(9);
                             }
                         }.start();
                     }
@@ -479,7 +487,8 @@ public class Game extends AppCompatActivity {
                                 score.setText(String.valueOf(currentScore));
                                 checkmark.setVisibility(View.INVISIBLE);
                                 responded = false;
-                                initializeGesture(randomGenerator(9));
+                                //initializeGesture(randomGenerator(9));
+                                initializeGesture(10);
                             }
                         }.start();
                     }
