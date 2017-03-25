@@ -24,6 +24,8 @@ import android.view.MotionEvent;
 import android.view.View.OnTouchListener;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 /*
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -151,6 +153,60 @@ public class Game extends AppCompatActivity {
                 break;
 
         }
+    }
+
+    private PDollarRecognizer recognizer = new PDollarRecognizer();
+    private ArrayList<Point> points = new ArrayList<Point>();
+    private boolean isPdollarOn = false;
+
+    private void usePdollar(int gestureNumber)
+    {
+        final int pdollarGesture = gestureNumber;
+        isPdollarOn = true;
+        if(pdollarGesture == 1)
+        {
+            //herd the sheep - detect circle
+
+        }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event)
+    {
+        int action = MotionEventCompat.getActionMasked(event);
+        int x = (int) event.getRawX();
+        int y = (int) event.getRawY();
+        RecognizerResults results;
+
+        if(isPdollarOn) {
+            switch (action) {
+                case (MotionEvent.ACTION_DOWN):
+                    Log.i("TAG", "DOWN: (" + x + ", " + y + ")");
+                    Point p1 = new Point(x, y, 1);
+                    points.add(p1);
+                    break;
+
+                case (MotionEvent.ACTION_UP):
+                    Log.i("TAG", "UP: (" + x + ", " + y + ")");
+                    Point p2 = new Point(x, y, 1);
+                    points.add(p2);
+                    if (points.size() > 10) {
+                        results = recognizer.Recognize(points);
+                        Log.i("TAG", results.mName);
+                    }
+                    points.clear();
+                    isPdollarOn = false;
+                    break;
+
+                case (MotionEvent.ACTION_MOVE):
+                    Log.i("TAG", "MOVING: (" + x + ", " + y + ")");
+                    Point p3 = new Point(x, y, 1);
+                    points.add(p3);
+                    break;
+            }
+        }
+
+        return true;
     }
 
         private void useGyroscope(int gestureNumber) {
