@@ -312,6 +312,7 @@ public class PDollarRecognizer {
 			)), mNumPoints)
 		);
 
+        /*
 		mPntClouds.add(new PointCloud("D", new ArrayList<Point>(Arrays.asList(
 			new Point(345,9,1),new Point(345,87,1),
 			new Point(351,8,2),new Point(363,8,2),
@@ -328,6 +329,7 @@ public class PDollarRecognizer {
 			new Point(355,88,2),new Point(349,87,2)
 			)), mNumPoints)
 		);
+		*/
 
 		mPntClouds.add(new PointCloud("P", new ArrayList<Point>(Arrays.asList(
 			new Point(507,8,1),  new Point(507,87,1),
@@ -378,6 +380,7 @@ public class PDollarRecognizer {
 			)), mNumPoints)
 		);
 
+        /*
 		mPntClouds.add(new PointCloud("NULL", new ArrayList<Point>(Arrays.asList(
 			new Point(382,310,1),new Point(377,308,1),new Point(373,307,1),
 			new Point(366,307,1),new Point(360,310,1),new Point(356,313,1),
@@ -395,6 +398,7 @@ public class PDollarRecognizer {
 			new Point(392,312,1),new Point(418,309,2),new Point(337,390,2)
 			)), mNumPoints)
 		);
+		*/
 
 		mPntClouds.add(new PointCloud("arrowhead", new ArrayList<Point>(Arrays.asList(
 			new Point(506,349,1),new Point(574,349,1),

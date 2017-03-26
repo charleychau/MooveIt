@@ -246,6 +246,12 @@ public class Game extends AppCompatActivity {
                             startActivity(exitGame);
                         }
                     }
+                    else
+                    {
+                        Intent exitGame = new Intent(Game.this, EndGame.class);
+                        exitGame.putExtra("finalScore", currentScore);
+                        startActivity(exitGame);
+                    }
                     points.clear();
                     isPdollarOn = false;
                     break;
