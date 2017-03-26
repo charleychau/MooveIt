@@ -104,7 +104,8 @@ public class Game extends AppCompatActivity {
             case 1:
                 gestureInstruction.setText("Herd the sheep"); //left but is a "circle" -> need to fix, p dollar
                 imageview.setImageResource(R.drawable.sheep_unherded);
-                testGestureText.setOnTouchListener(new OnSwipeTouchListener(Game.this, 1));
+                //testGestureText.setOnTouchListener(new OnSwipeTouchListener(Game.this, 1));
+                usePdollar(1);
                 break;
             case 2:
                 gestureInstruction.setText("Move the horse"); //right
@@ -157,17 +158,47 @@ public class Game extends AppCompatActivity {
 
     private PDollarRecognizer recognizer = new PDollarRecognizer();
     private ArrayList<Point> points = new ArrayList<Point>();
+    private RecognizerResults results;
     private boolean isPdollarOn = false;
+    private int pDollarGestureNum = 0;
 
     private void usePdollar(int gestureNumber)
     {
         final int pdollarGesture = gestureNumber;
+        pDollarGestureNum = pdollarGesture;
         isPdollarOn = true;
-        if(pdollarGesture == 1)
+        /*
+        if(pdollarGesture == 1 && isPdollarOn)
         {
             //herd the sheep - detect circle
 
+            if(results.mName == "circle")
+            {
+                imageview.setImageResource(R.drawable.sheep_herded);
+                checkmark.setVisibility(View.VISIBLE);
+                new CountDownTimer(750, 250) { // 5000 = 5 sec
+
+                    public void onTick(long millisUntilFinished) {
+                    }
+
+                    public void onFinish() {
+                        currentScore += 100;
+                        score.setText(String.valueOf(currentScore));
+                        checkmark.setVisibility(View.INVISIBLE);
+                        initializeGesture(randomGenerator(1));
+                    }
+                }.start();
+            }
+            else {
+                Intent exitGame = new Intent(Game.this, EndGame.class);
+                exitGame.putExtra("finalScore", currentScore);
+                startActivity(exitGame);
+            }
+
+            isPdollarOn = false;
+
         }
+        */
     }
 
     @Override
@@ -176,9 +207,8 @@ public class Game extends AppCompatActivity {
         int action = MotionEventCompat.getActionMasked(event);
         int x = (int) event.getRawX();
         int y = (int) event.getRawY();
-        RecognizerResults results;
 
-        if(isPdollarOn) {
+        if(pDollarGestureNum == 1 && isPdollarOn) {
             switch (action) {
                 case (MotionEvent.ACTION_DOWN):
                     Log.i("TAG", "DOWN: (" + x + ", " + y + ")");
@@ -193,6 +223,28 @@ public class Game extends AppCompatActivity {
                     if (points.size() > 10) {
                         results = recognizer.Recognize(points);
                         Log.i("TAG", results.mName);
+                        if(results.mName == "circle")
+                        {
+                            imageview.setImageResource(R.drawable.sheep_herded);
+                            checkmark.setVisibility(View.VISIBLE);
+                            new CountDownTimer(750, 250) { // 5000 = 5 sec
+
+                                public void onTick(long millisUntilFinished) {
+                                }
+
+                                public void onFinish() {
+                                    currentScore += 100;
+                                    score.setText(String.valueOf(currentScore));
+                                    checkmark.setVisibility(View.INVISIBLE);
+                                    initializeGesture(randomGenerator(1));
+                                }
+                            }.start();
+                        }
+                        else {
+                            Intent exitGame = new Intent(Game.this, EndGame.class);
+                            exitGame.putExtra("finalScore", currentScore);
+                            startActivity(exitGame);
+                        }
                     }
                     points.clear();
                     isPdollarOn = false;
@@ -205,6 +257,7 @@ public class Game extends AppCompatActivity {
                     break;
             }
         }
+
 
         return true;
     }
