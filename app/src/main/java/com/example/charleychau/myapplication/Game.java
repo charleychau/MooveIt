@@ -42,6 +42,9 @@ public class Game extends AppCompatActivity {
     private ImageView checkmark;
     private SensorManager sensorManager;
 
+    //public int beginConstraint = 5200;
+    //public boolean responded = false;
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -121,26 +124,31 @@ public class Game extends AppCompatActivity {
                 testGestureText.setOnTouchListener(new OnSwipeTouchListener(Game.this, 4));
                 break;
             case 5:
+                gestureInstruction.setTextColor(Color.BLACK);
                 gestureInstruction.setText("Go fish!"); //gyroscope that accepts any movement 4 now
                 imageview.setImageResource(R.drawable.fishing_rod);
                 useGyroscope(5);
                 break;
             case 6:
+                gestureInstruction.setTextColor(Color.BLACK);
                 gestureInstruction.setText("Pour the milk"); //counterclockwise turn
                 imageview.setImageResource(R.drawable.milk_empty_glass);
                 useGyroscope(6);
                 break;
             case 7:
+                gestureInstruction.setTextColor(Color.BLACK);
                 gestureInstruction.setText("Feed the pig"); //clockwise turn
                 imageview.setImageResource(R.drawable.pig_hungry);
                 useGyroscope(7);
                 break;
             case 8:
+                gestureInstruction.setTextColor(Color.BLACK);
                 gestureInstruction.setText("Cut the tree!");
                 imageview.setImageResource(R.drawable.tree); //right or left slashing movement via gyroscope
                 useGyroscope(8);
                 break;
             case 9:
+                gestureInstruction.setTextColor(Color.BLACK);
                 gestureInstruction.setText("Shake the bell!");
                 imageview.setImageResource(R.drawable.bell); //shake ur phone
                 useGyroscope(9);
