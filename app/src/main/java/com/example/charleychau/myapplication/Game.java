@@ -65,6 +65,7 @@ public class Game extends AppCompatActivity {
         score.setVisibility(View.INVISIBLE);
         currentScore = 0;
         score.setText(String.valueOf(currentScore));
+        System.out.println(3.0f);
         new CountDownTimer(4000, 1000) {
 
             public void onTick(long millisUntilFinished) {
@@ -144,39 +145,46 @@ public class Game extends AppCompatActivity {
                 imageview.setImageResource(R.drawable.bell); //shake ur phone
                 useGyroscope(9);
                 break;
-            case 10:
-                gestureInstruction.setText("Churn the butter!"); //p dollar
-                imageview.setImageResource(R.drawable.butter_churn);
-                useGyroscope(10);
-                break;
 
         }
     }
 
         private void useGyroscope(int gestureNumber) {
             final int gyroscopeNumber = gestureNumber;
-            if (gestureNumber == 5) {
-                //Gesture currently not implemented, passing without any detection
-                //Replace this code below with implemented gesture when ready
-                new CountDownTimer(5000, 1) {
-                    public void onTick(long millisUntilFinished) {
-                    }
-                    public void onFinish() {
-                        imageview.setImageResource(R.drawable.fish_caught);
-                        checkmark.setVisibility(View.VISIBLE);
+            if (gyroscopeNumber == 5) {
+                sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+                Sensor gyroscopeSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+                SensorEventListener gyroscopeSensorListener = new SensorEventListener() {
+                    @Override
+                    public void onSensorChanged(SensorEvent sensorEvent) {
+                        //System.out.println(sensorEvent.values[0] + "," + sensorEvent.values[1]+ ", " + sensorEvent.values[2]);
+                        if (sensorEvent.values[0] < -0.5f && sensorEvent.values[1] < 0.5f && sensorEvent.values[2] < 3f) { // anticlockwise
+                            sensorManager.unregisterListener(this);
+                                imageview.setImageResource(R.drawable.fish_caught);
+                                checkmark.setVisibility(View.VISIBLE);
+                                new CountDownTimer(750, 250) { // 5000 = 5 sec
 
-                        new CountDownTimer(750, 250) { // 5000 = 5 sec
-                            public void onTick(long millisUntilFinished) {
-                            }
-                            public void onFinish() {
-                                currentScore += 100;
-                                score.setText(String.valueOf(currentScore));
-                                checkmark.setVisibility(View.INVISIBLE);
-                                initializeGesture(randomGenerator(5));
-                            }
-                        }.start();
+                                    public void onTick(long millisUntilFinished) {
+                                    }
+
+                                    public void onFinish() {
+                                        currentScore += 100;
+                                        score.setText(String.valueOf(currentScore));
+                                        checkmark.setVisibility(View.INVISIBLE);
+                                        initializeGesture(randomGenerator(5));
+                                    }
+                                }.start();
+                        }
                     }
-                }.start();
+
+                    @Override
+                    public void onAccuracyChanged(Sensor sensor, int i) {
+                    }
+                };
+
+                // Register the listener
+                sensorManager.registerListener(gyroscopeSensorListener,
+                        gyroscopeSensor, SensorManager.SENSOR_DELAY_NORMAL);
             }
             else if(gestureNumber ==6 || gestureNumber == 7){
                 //Working implementation of clockwise and counterclockwise gesture recognition
@@ -248,73 +256,75 @@ public class Game extends AppCompatActivity {
                         gyroscopeSensor, SensorManager.SENSOR_DELAY_NORMAL);
             }
             else if(gestureNumber ==8){
-                //Gesture currently not implemented, passing without any detection
-                //Replace this code below with implemented gesture when ready
-                new CountDownTimer(5000, 1) {
-                    public void onTick(long millisUntilFinished) {
-                    }
-                    public void onFinish() {
-                        imageview.setImageResource(R.drawable.tree_chopped);
-                        checkmark.setVisibility(View.VISIBLE);
+                sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+                Sensor gyroscopeSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+                SensorEventListener gyroscopeSensorListener = new SensorEventListener() {
+                    @Override
+                    public void onSensorChanged(SensorEvent sensorEvent) {
+                        //System.out.println(sensorEvent.values[0] + "," + sensorEvent.values[1]+ ", " + sensorEvent.values[2]);
+                        if (sensorEvent.values[0] > 0.8f && sensorEvent.values[2]>3.0f) { // shaking
+                            sensorManager.unregisterListener(this);
+                            imageview.setImageResource(R.drawable.tree_chopped);
+                            checkmark.setVisibility(View.VISIBLE);
+                            new CountDownTimer(750, 250) { // 5000 = 5 sec
 
-                        new CountDownTimer(750, 250) { // 5000 = 5 sec
-                            public void onTick(long millisUntilFinished) {
-                            }
-                            public void onFinish() {
-                                currentScore += 100;
-                                score.setText(String.valueOf(currentScore));
-                                checkmark.setVisibility(View.INVISIBLE);
-                                initializeGesture(randomGenerator(5));
-                            }
-                        }.start();
+                                public void onTick(long millisUntilFinished) {
+                                }
+
+                                public void onFinish() {
+                                    currentScore += 100;
+                                    score.setText(String.valueOf(currentScore));
+                                    checkmark.setVisibility(View.INVISIBLE);
+                                    initializeGesture(randomGenerator(8));
+                                }
+                            }.start();
+                        }
                     }
-                }.start();
+
+                    @Override
+                    public void onAccuracyChanged(Sensor sensor, int i) {
+                    }
+                };
+
+                // Register the listener
+                sensorManager.registerListener(gyroscopeSensorListener,
+                        gyroscopeSensor, SensorManager.SENSOR_DELAY_NORMAL);
             }
             else if(gestureNumber ==9){
-                //Gesture currently not implemented, passing without any detection
-                //Replace this code below with implemented gesture when ready
-                new CountDownTimer(5000, 1) {
-                    public void onTick(long millisUntilFinished) {
-                    }
-                    public void onFinish() {
-                        imageview.setImageResource(R.drawable.bell_ringing);
-                        checkmark.setVisibility(View.VISIBLE);
+                sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+                Sensor gyroscopeSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+                SensorEventListener gyroscopeSensorListener = new SensorEventListener() {
+                    @Override
+                    public void onSensorChanged(SensorEvent sensorEvent) {
+                        System.out.println(sensorEvent.values[0] + "," + sensorEvent.values[1]+ ", " + sensorEvent.values[2]);
+                        if ((sensorEvent.values[0] > 1.0f && sensorEvent.values[1]>1.0f && sensorEvent.values[2] > 1.0f) ||
+                                (sensorEvent.values[0] > 1.0f && sensorEvent.values[1]<-1.0f && sensorEvent.values[2] < -1.0f)) { // shaking
+                            sensorManager.unregisterListener(this);
+                            imageview.setImageResource(R.drawable.bell_ringing);
+                            checkmark.setVisibility(View.VISIBLE);
+                            new CountDownTimer(750, 250) { // 5000 = 5 sec
 
-                        new CountDownTimer(750, 250) { // 5000 = 5 sec
-                            public void onTick(long millisUntilFinished) {
-                            }
-                            public void onFinish() {
-                                currentScore += 100;
-                                score.setText(String.valueOf(currentScore));
-                                checkmark.setVisibility(View.INVISIBLE);
-                                initializeGesture(randomGenerator(5));
-                            }
-                        }.start();
-                    }
-                }.start();
-            }
-            else if(gestureNumber ==10){
-                //Gesture currently not implemented, passing without any detection
-                //Replace this code below with implemented gesture when ready
-                new CountDownTimer(5000, 1) {
-                    public void onTick(long millisUntilFinished) {
-                    }
-                    public void onFinish() {
-                        imageview.setImageResource(R.drawable.butter);
-                        checkmark.setVisibility(View.VISIBLE);
+                                public void onTick(long millisUntilFinished) {
+                                }
 
-                        new CountDownTimer(750, 250) { // 5000 = 5 sec
-                            public void onTick(long millisUntilFinished) {
-                            }
-                            public void onFinish() {
-                                currentScore += 100;
-                                score.setText(String.valueOf(currentScore));
-                                checkmark.setVisibility(View.INVISIBLE);
-                                initializeGesture(randomGenerator(5));
-                            }
-                        }.start();
+                                public void onFinish() {
+                                    currentScore += 100;
+                                    score.setText(String.valueOf(currentScore));
+                                    checkmark.setVisibility(View.INVISIBLE);
+                                    initializeGesture(randomGenerator(9));
+                                }
+                            }.start();
+                        }
                     }
-                }.start();
+
+                    @Override
+                    public void onAccuracyChanged(Sensor sensor, int i) {
+                    }
+                };
+
+                // Register the listener
+                sensorManager.registerListener(gyroscopeSensorListener,
+                        gyroscopeSensor, SensorManager.SENSOR_DELAY_NORMAL);
             }
             else {
                 //Extra gesture cases may be defined in the future.
@@ -417,7 +427,7 @@ public class Game extends AppCompatActivity {
                         currentScore += 100;
                         score.setText(String.valueOf(currentScore));
                         checkmark.setVisibility(View.INVISIBLE);
-                        initializeGesture(randomGenerator(3));
+                        initializeGesture(randomGenerator(4));
                     }
                 }.start();
             }
