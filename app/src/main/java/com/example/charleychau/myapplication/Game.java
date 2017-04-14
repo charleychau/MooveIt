@@ -41,6 +41,9 @@ public class Game extends AppCompatActivity {
     private ImageView imageview;
     private ImageView checkmark;
     private SensorManager sensorManager;
+    public int beginConstraint = 5200;
+    public static int ENDCONSTRAINT = 2000;
+    public boolean responded = false;
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -98,56 +101,71 @@ public class Game extends AppCompatActivity {
         return randomGesture;
     }
     private void initializeGesture(int gestureNumber) {
+
+        if (beginConstraint > 2000){
+            beginConstraint = beginConstraint - 250;
+        }
+
         switch (gestureNumber) {
             case 1:
                 gestureInstruction.setText("Herd the sheep"); //left but is a "circle" -> need to fix, p dollar
                 imageview.setImageResource(R.drawable.sheep_unherded);
                 testGestureText.setOnTouchListener(new OnSwipeTouchListener(Game.this, 1));
+                startCountdown(beginConstraint);
                 break;
             case 2:
                 gestureInstruction.setText("Move the horse"); //right
                 imageview.setImageResource(R.drawable.horseleft);
                 testGestureText.setOnTouchListener(new OnSwipeTouchListener(Game.this, 2));
+                startCountdown(beginConstraint);
                 break;
             case 3:
                 gestureInstruction.setText("Plow the fields"); //down
                 imageview.setImageResource(R.drawable.empty_field);
                 testGestureText.setOnTouchListener(new OnSwipeTouchListener(Game.this, 3));
+                startCountdown(beginConstraint);
                 break;
             case 4:
                 gestureInstruction.setText("Feed the chicken!"); //up
                 imageview.setImageResource(R.drawable.chicken_hungry); //replace this with chicken w/grain
                 testGestureText.setOnTouchListener(new OnSwipeTouchListener(Game.this, 4));
+                startCountdown(beginConstraint);
                 break;
             case 5:
                 gestureInstruction.setText("Go fish!"); //gyroscope that accepts any movement 4 now
                 imageview.setImageResource(R.drawable.fishing_rod);
                 useGyroscope(5);
+                startCountdown(beginConstraint);
                 break;
             case 6:
                 gestureInstruction.setText("Pour the milk"); //counterclockwise turn
                 imageview.setImageResource(R.drawable.milk_empty_glass);
                 useGyroscope(6);
+                startCountdown(beginConstraint);
                 break;
             case 7:
                 gestureInstruction.setText("Feed the pig"); //clockwise turn
                 imageview.setImageResource(R.drawable.pig_hungry);
                 useGyroscope(7);
+                startCountdown(beginConstraint);
                 break;
             case 8:
                 gestureInstruction.setText("Cut the tree!");
                 imageview.setImageResource(R.drawable.tree); //right or left slashing movement via gyroscope
                 useGyroscope(8);
+                startCountdown(beginConstraint);
                 break;
             case 9:
                 gestureInstruction.setText("Shake the bell!");
                 imageview.setImageResource(R.drawable.bell); //shake ur phone
                 useGyroscope(9);
+                startCountdown(beginConstraint);
                 break;
             case 10:
                 gestureInstruction.setText("Churn the butter!"); //p dollar
                 imageview.setImageResource(R.drawable.butter_churn);
                 useGyroscope(10);
+                startCountdown(beginConstraint);
                 break;
 
         }
@@ -345,6 +363,7 @@ public class Game extends AppCompatActivity {
                         currentScore += 100;
                         score.setText(String.valueOf(currentScore));
                         checkmark.setVisibility(View.INVISIBLE);
+                        responded = false;
                         initializeGesture(randomGenerator(1));
                     }
                 }.start();
@@ -369,6 +388,7 @@ public class Game extends AppCompatActivity {
                         currentScore += 100;
                         score.setText(String.valueOf(currentScore));
                         checkmark.setVisibility(View.INVISIBLE);
+                        responded = false;
                         initializeGesture(randomGenerator(2));
                     }
                 }.start();
@@ -393,6 +413,7 @@ public class Game extends AppCompatActivity {
                         currentScore += 100;
                         score.setText(String.valueOf(currentScore));
                         checkmark.setVisibility(View.INVISIBLE);
+                        responded = false;
                         initializeGesture(randomGenerator(3));
                     }
                 }.start();
@@ -417,6 +438,7 @@ public class Game extends AppCompatActivity {
                         currentScore += 100;
                         score.setText(String.valueOf(currentScore));
                         checkmark.setVisibility(View.INVISIBLE);
+                        responded = false;
                         initializeGesture(randomGenerator(3));
                     }
                 }.start();
@@ -429,6 +451,7 @@ public class Game extends AppCompatActivity {
         }
 
         public boolean onTouch(View v, MotionEvent event) {
+            responded = true;
             return gestureDetector.onTouchEvent(event);
         }
 
@@ -440,6 +463,7 @@ public class Game extends AppCompatActivity {
             @Override
             public boolean onDown(MotionEvent e) {
                 //onSwipeDown();
+                responded = true;
                 return true;
             }
 
@@ -453,18 +477,24 @@ public class Game extends AppCompatActivity {
                 System.out.println("absoluteY is: " + absoluteY);
                 if(absoluteY > SWIPE_DISTANCE_THRESHOLD  && absoluteX <absoluteY && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD ){
                     if(distanceY >0){
+                        responded = true;
                         onSwipeDown();
                     }
                     else {
+                        responded = true;
                         onSwipeUp();
                     }
                     return true;
                 }
                 if (absoluteX > absoluteY && absoluteX > SWIPE_DISTANCE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
-                    if (distanceX > 0)
+                    if (distanceX > 0){
+
                         onSwipeRight();
-                    else
+                    }
+                    else {
+                        responded = true;
                         onSwipeLeft();
+                    }
                     return true;
                 }
                 return false;
@@ -472,6 +502,22 @@ public class Game extends AppCompatActivity {
         }
     }
 
+    public void startCountdown (int beginConstraint) {
+        new CountDownTimer(beginConstraint, 1) {
+            public void onTick(long millisUntilFinished) {
+                if (responded == true) {
+                    cancel();
+                }
+            }
+            public void onFinish() {
+                if (responded == false) {
+                    Intent exitGame = new Intent (Game.this, EndGame.class);
+                    exitGame.putExtra("finalScore", currentScore);
+                    startActivity(exitGame);
+                }
+            }
+        }.start();
+    }
 
 }
 
