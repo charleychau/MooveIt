@@ -42,8 +42,8 @@ public class Game extends AppCompatActivity {
     private ImageView checkmark;
     private SensorManager sensorManager;
 
-    //public int beginConstraint = 5200;
-    //public boolean responded = false;
+    public int beginConstraint = 5200;
+    public boolean responded = false;
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -104,21 +104,25 @@ public class Game extends AppCompatActivity {
     private void initializeGesture(int gestureNumber) {
         switch (gestureNumber) {
             case 1:
+                gestureInstruction.setTextColor(Color.WHITE);
                 gestureInstruction.setText("Herd the sheep"); //left but is a "circle" -> need to fix, p dollar
                 imageview.setImageResource(R.drawable.sheep_unherded);
                 testGestureText.setOnTouchListener(new OnSwipeTouchListener(Game.this, 1));
                 break;
             case 2:
+                gestureInstruction.setTextColor(Color.WHITE);
                 gestureInstruction.setText("Move the horse"); //right
                 imageview.setImageResource(R.drawable.horseleft);
                 testGestureText.setOnTouchListener(new OnSwipeTouchListener(Game.this, 2));
                 break;
             case 3:
+                gestureInstruction.setTextColor(Color.WHITE);
                 gestureInstruction.setText("Plow the fields"); //down
                 imageview.setImageResource(R.drawable.empty_field);
                 testGestureText.setOnTouchListener(new OnSwipeTouchListener(Game.this, 3));
                 break;
             case 4:
+                gestureInstruction.setTextColor(Color.WHITE);
                 gestureInstruction.setText("Feed the chicken!"); //up
                 imageview.setImageResource(R.drawable.chicken_hungry); //replace this with chicken w/grain
                 testGestureText.setOnTouchListener(new OnSwipeTouchListener(Game.this, 4));
