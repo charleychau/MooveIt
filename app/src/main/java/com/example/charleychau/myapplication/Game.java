@@ -8,6 +8,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.Image;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.CountDownTimer;
 import android.support.v4.view.MotionEventCompat;
@@ -41,6 +42,8 @@ public class Game extends AppCompatActivity {
     private ImageView imageview;
     private ImageView checkmark;
     private SensorManager sensorManager;
+    private MediaPlayer player;
+    private MediaPlayer notificationPlayer;
 
     public int beginConstraint = 5200;
     public boolean responded = false;
@@ -55,6 +58,13 @@ public class Game extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        player = MediaPlayer.create(Game.this, R.raw.oldmacdonald);
+        player.setLooping(true);
+        player.start();
+
+        notificationPlayer = MediaPlayer.create(Game.this, R.raw.success);
+
         mTextField = (TextView) findViewById(R.id.playTimer);
         score = (TextView) findViewById(R.id.scoreView);
         testGestureText = (TextView) findViewById(R.id.textView2);
@@ -86,6 +96,7 @@ public class Game extends AppCompatActivity {
                         score.setText("0");
                         score.setVisibility(View.VISIBLE);
                         imageview.setVisibility(View.VISIBLE);
+                        responded = false;
                         initializeGesture(randomGenerator(0));
                     }
                 }, 1000);
@@ -102,62 +113,75 @@ public class Game extends AppCompatActivity {
         return randomGesture;
     }
     private void initializeGesture(int gestureNumber) {
+
+        if (beginConstraint > 2000){
+            beginConstraint = beginConstraint - 150;
+        }
+
         switch (gestureNumber) {
             case 1:
                 gestureInstruction.setTextColor(Color.WHITE);
                 gestureInstruction.setText("Herd the sheep"); //left but is a "circle" -> need to fix, p dollar
                 imageview.setImageResource(R.drawable.sheep_unherded);
+                startCountdown(beginConstraint);
                 testGestureText.setOnTouchListener(new OnSwipeTouchListener(Game.this, 1));
                 break;
             case 2:
                 gestureInstruction.setTextColor(Color.WHITE);
                 gestureInstruction.setText("Move the horse"); //right
                 imageview.setImageResource(R.drawable.horseleft);
+                startCountdown(beginConstraint);
                 testGestureText.setOnTouchListener(new OnSwipeTouchListener(Game.this, 2));
                 break;
             case 3:
                 gestureInstruction.setTextColor(Color.WHITE);
                 gestureInstruction.setText("Plow the fields"); //down
                 imageview.setImageResource(R.drawable.empty_field);
+                startCountdown(beginConstraint);
                 testGestureText.setOnTouchListener(new OnSwipeTouchListener(Game.this, 3));
                 break;
             case 4:
                 gestureInstruction.setTextColor(Color.WHITE);
                 gestureInstruction.setText("Feed the chicken!"); //up
                 imageview.setImageResource(R.drawable.chicken_hungry); //replace this with chicken w/grain
+                startCountdown(beginConstraint);
                 testGestureText.setOnTouchListener(new OnSwipeTouchListener(Game.this, 4));
                 break;
             case 5:
-                gestureInstruction.setTextColor(Color.BLACK);
+                gestureInstruction.setTextColor(Color.RED);
                 gestureInstruction.setText("Go fish!"); //gyroscope that accepts any movement 4 now
                 imageview.setImageResource(R.drawable.fishing_rod);
+                startCountdown(beginConstraint);
                 useGyroscope(5);
                 break;
             case 6:
-                gestureInstruction.setTextColor(Color.BLACK);
+                gestureInstruction.setTextColor(Color.RED);
                 gestureInstruction.setText("Pour the milk"); //counterclockwise turn
                 imageview.setImageResource(R.drawable.milk_empty_glass);
+                startCountdown(beginConstraint);
                 useGyroscope(6);
                 break;
             case 7:
-                gestureInstruction.setTextColor(Color.BLACK);
+                gestureInstruction.setTextColor(Color.RED);
                 gestureInstruction.setText("Feed the pig"); //clockwise turn
                 imageview.setImageResource(R.drawable.pig_hungry);
+                startCountdown(beginConstraint);
                 useGyroscope(7);
                 break;
             case 8:
-                gestureInstruction.setTextColor(Color.BLACK);
+                gestureInstruction.setTextColor(Color.RED);
                 gestureInstruction.setText("Cut the tree!");
                 imageview.setImageResource(R.drawable.tree); //right or left slashing movement via gyroscope
+                startCountdown(beginConstraint);
                 useGyroscope(8);
                 break;
             case 9:
-                gestureInstruction.setTextColor(Color.BLACK);
+                gestureInstruction.setTextColor(Color.RED);
                 gestureInstruction.setText("Shake the bell!");
                 imageview.setImageResource(R.drawable.bell); //shake ur phone
+                startCountdown(beginConstraint);
                 useGyroscope(9);
                 break;
-
         }
     }
 
@@ -170,8 +194,9 @@ public class Game extends AppCompatActivity {
                     @Override
                     public void onSensorChanged(SensorEvent sensorEvent) {
                         //System.out.println(sensorEvent.values[0] + "," + sensorEvent.values[1]+ ", " + sensorEvent.values[2]);
-                        if (sensorEvent.values[0] < -0.5f && sensorEvent.values[1] < 0.5f && sensorEvent.values[2] < 3f) { // anticlockwise
+                        if (sensorEvent.values[0] < -0.5f && sensorEvent.values[1] < 0.5f && sensorEvent.values[2] < 3.0f) { // anticlockwise
                             sensorManager.unregisterListener(this);
+                            responded = true;
                                 imageview.setImageResource(R.drawable.fish_caught);
                                 checkmark.setVisibility(View.VISIBLE);
                                 new CountDownTimer(750, 250) { // 5000 = 5 sec
@@ -180,9 +205,11 @@ public class Game extends AppCompatActivity {
                                     }
 
                                     public void onFinish() {
+                                        notificationPlayer.start();
                                         currentScore += 100;
                                         score.setText(String.valueOf(currentScore));
                                         checkmark.setVisibility(View.INVISIBLE);
+                                        responded = false;
                                         initializeGesture(randomGenerator(5));
                                     }
                                 }.start();
@@ -208,6 +235,7 @@ public class Game extends AppCompatActivity {
                         if (sensorEvent.values[2] > 3.0f ) { // anticlockwise
                             sensorManager.unregisterListener(this);
                             if(gyroscopeNumber ==6) {
+                                responded = true;
                                 imageview.setImageResource(R.drawable.milk_pouring);
                                 checkmark.setVisibility(View.VISIBLE);
                                 new CountDownTimer(750, 250) { // 5000 = 5 sec
@@ -216,9 +244,11 @@ public class Game extends AppCompatActivity {
                                     }
 
                                     public void onFinish() {
+                                        notificationPlayer.start();
                                         currentScore += 100;
                                         score.setText(String.valueOf(currentScore));
                                         checkmark.setVisibility(View.INVISIBLE);
+                                        responded = false;
                                         initializeGesture(randomGenerator(6));
                                     }
                                 }.start();
@@ -232,6 +262,7 @@ public class Game extends AppCompatActivity {
                         } else if (sensorEvent.values[2] < -3.0f) {  // clockwise
                             sensorManager.unregisterListener(this);
                             if (gyroscopeNumber == 7) {
+                                responded = true;
                                 imageview.setImageResource(R.drawable.pig_eating);
                                 checkmark.setVisibility(View.VISIBLE);
                                 new CountDownTimer(750, 250) { // 5000 = 5 sec
@@ -240,9 +271,11 @@ public class Game extends AppCompatActivity {
                                     }
 
                                     public void onFinish() {
+                                        notificationPlayer.start();
                                         currentScore += 100;
                                         score.setText(String.valueOf(currentScore));
                                         checkmark.setVisibility(View.INVISIBLE);
+                                        responded = false;
                                         initializeGesture(randomGenerator(7));
                                     }
                                 }.start();
@@ -267,7 +300,7 @@ public class Game extends AppCompatActivity {
                 sensorManager.registerListener(gyroscopeSensorListener,
                         gyroscopeSensor, SensorManager.SENSOR_DELAY_NORMAL);
             }
-            else if(gestureNumber ==8){
+            else if(gestureNumber ==8){ // Cut the tree
                 sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
                 Sensor gyroscopeSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
                 SensorEventListener gyroscopeSensorListener = new SensorEventListener() {
@@ -276,6 +309,7 @@ public class Game extends AppCompatActivity {
                         //System.out.println(sensorEvent.values[0] + "," + sensorEvent.values[1]+ ", " + sensorEvent.values[2]);
                         if (sensorEvent.values[0] > 0.8f && sensorEvent.values[2]>3.0f) { // shaking
                             sensorManager.unregisterListener(this);
+                            responded = true;
                             imageview.setImageResource(R.drawable.tree_chopped);
                             checkmark.setVisibility(View.VISIBLE);
                             new CountDownTimer(750, 250) { // 5000 = 5 sec
@@ -284,9 +318,11 @@ public class Game extends AppCompatActivity {
                                 }
 
                                 public void onFinish() {
+                                    notificationPlayer.start();
                                     currentScore += 100;
                                     score.setText(String.valueOf(currentScore));
                                     checkmark.setVisibility(View.INVISIBLE);
+                                    responded = false;
                                     initializeGesture(randomGenerator(8));
                                 }
                             }.start();
@@ -302,7 +338,7 @@ public class Game extends AppCompatActivity {
                 sensorManager.registerListener(gyroscopeSensorListener,
                         gyroscopeSensor, SensorManager.SENSOR_DELAY_NORMAL);
             }
-            else if(gestureNumber ==9){
+            else if(gestureNumber ==9){ // Shake the bell
                 sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
                 Sensor gyroscopeSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
                 SensorEventListener gyroscopeSensorListener = new SensorEventListener() {
@@ -312,6 +348,7 @@ public class Game extends AppCompatActivity {
                         if ((sensorEvent.values[0] > 1.0f && sensorEvent.values[1]>1.0f && sensorEvent.values[2] > 1.0f) ||
                                 (sensorEvent.values[0] > 1.0f && sensorEvent.values[1]<-1.0f && sensorEvent.values[2] < -1.0f)) { // shaking
                             sensorManager.unregisterListener(this);
+                            responded = true;
                             imageview.setImageResource(R.drawable.bell_ringing);
                             checkmark.setVisibility(View.VISIBLE);
                             new CountDownTimer(750, 250) { // 5000 = 5 sec
@@ -320,9 +357,11 @@ public class Game extends AppCompatActivity {
                                 }
 
                                 public void onFinish() {
+                                    notificationPlayer.start();
                                     currentScore += 100;
                                     score.setText(String.valueOf(currentScore));
                                     checkmark.setVisibility(View.INVISIBLE);
+                                    responded = false;
                                     initializeGesture(randomGenerator(9));
                                 }
                             }.start();
@@ -364,9 +403,11 @@ public class Game extends AppCompatActivity {
                     }
 
                     public void onFinish() {
+                        notificationPlayer.start();
                         currentScore += 100;
                         score.setText(String.valueOf(currentScore));
                         checkmark.setVisibility(View.INVISIBLE);
+                        responded = false;
                         initializeGesture(randomGenerator(1));
                     }
                 }.start();
@@ -388,9 +429,11 @@ public class Game extends AppCompatActivity {
                     }
 
                     public void onFinish() {
+                        notificationPlayer.start();
                         currentScore += 100;
                         score.setText(String.valueOf(currentScore));
                         checkmark.setVisibility(View.INVISIBLE);
+                        responded = false;
                         initializeGesture(randomGenerator(2));
                     }
                 }.start();
@@ -412,9 +455,11 @@ public class Game extends AppCompatActivity {
                     }
 
                     public void onFinish() {
+                        notificationPlayer.start();
                         currentScore += 100;
                         score.setText(String.valueOf(currentScore));
                         checkmark.setVisibility(View.INVISIBLE);
+                        responded = false;
                         initializeGesture(randomGenerator(3));
                     }
                 }.start();
@@ -436,9 +481,11 @@ public class Game extends AppCompatActivity {
                     }
 
                     public void onFinish() {
+                        notificationPlayer.start();
                         currentScore += 100;
                         score.setText(String.valueOf(currentScore));
                         checkmark.setVisibility(View.INVISIBLE);
+                        responded = false;
                         initializeGesture(randomGenerator(4));
                     }
                 }.start();
@@ -451,6 +498,7 @@ public class Game extends AppCompatActivity {
         }
 
         public boolean onTouch(View v, MotionEvent event) {
+            responded = true;
             return gestureDetector.onTouchEvent(event);
         }
 
@@ -462,6 +510,7 @@ public class Game extends AppCompatActivity {
             @Override
             public boolean onDown(MotionEvent e) {
                 //onSwipeDown();
+                responded = true;
                 return true;
             }
 
@@ -475,18 +524,24 @@ public class Game extends AppCompatActivity {
                 System.out.println("absoluteY is: " + absoluteY);
                 if(absoluteY > SWIPE_DISTANCE_THRESHOLD  && absoluteX <absoluteY && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD ){
                     if(distanceY >0){
+                        responded = true;
                         onSwipeDown();
                     }
                     else {
+                        responded = true;
                         onSwipeUp();
                     }
                     return true;
                 }
                 if (absoluteX > absoluteY && absoluteX > SWIPE_DISTANCE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
-                    if (distanceX > 0)
+                    if (distanceX > 0) {
+                        responded = true;
                         onSwipeRight();
-                    else
+                    }
+                    else {
+                        responded = true;
                         onSwipeLeft();
+                    }
                     return true;
                 }
                 return false;
@@ -494,6 +549,22 @@ public class Game extends AppCompatActivity {
         }
     }
 
+    public void startCountdown(int beginConstraint) {
+        new CountDownTimer(beginConstraint, 1) {
+            public void onTick(long millisUntilFinished) {
+                if (responded == true) {
+                    this.cancel();
+                }
+            }
+            public void onFinish() {
+                if (responded == false) {
+                    Intent exitGame = new Intent (Game.this, EndGame.class);
+                    exitGame.putExtra("finalScore", currentScore);
+                    startActivity(exitGame);
+                }
+            }
+        }.start();
+    }
 
 }
 
