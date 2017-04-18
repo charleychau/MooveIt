@@ -164,7 +164,7 @@ public class Game extends AppCompatActivity {
             case 7:
                 gestureInstruction.setTextColor(Color.RED);
                 gestureInstruction.setText("Feed the pig"); //clockwise turn
-                imageview.setImageResource(R.drawable.pig_hungry);
+                imageview.setImageResource(R.drawable.empty_trough);
                 startCountdown(beginConstraint);
                 useGyroscope(7);
                 break;
@@ -263,7 +263,7 @@ public class Game extends AppCompatActivity {
                             sensorManager.unregisterListener(this);
                             if (gyroscopeNumber == 7) {
                                 responded = true;
-                                imageview.setImageResource(R.drawable.pig_eating);
+                                imageview.setImageResource(R.drawable.filled_trough);
                                 checkmark.setVisibility(View.VISIBLE);
                                 new CountDownTimer(750, 250) { // 5000 = 5 sec
 
