@@ -8,6 +8,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.Image;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.CountDownTimer;
 import android.support.v4.view.MotionEventCompat;
@@ -46,6 +47,8 @@ public class Game extends AppCompatActivity {
     public int beginConstraint = 5200;
     public static int ENDCONSTRAINT = 2000;
     public boolean responded = false;
+    private MediaPlayer player;
+    private MediaPlayer completedPlayer;
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -69,6 +72,10 @@ public class Game extends AppCompatActivity {
         gestureInstruction.setVisibility(View.INVISIBLE);
         score.setVisibility(View.INVISIBLE);
         currentScore = 0;
+        player = MediaPlayer.create(Game.this, R.raw.oldmacdonald);
+        completedPlayer = MediaPlayer.create(Game.this, R.raw.complete);
+        player.setLooping(true);
+        player.start();
         score.setText(String.valueOf(currentScore));
         new CountDownTimer(4000, 1000) {
 
@@ -281,6 +288,7 @@ public class Game extends AppCompatActivity {
                                 sensorManager.unregisterListener(this);
                                 Intent exitGame = new Intent(Game.this, EndGame.class);
                                 exitGame.putExtra("finalScore", currentScore);
+                                player.pause();
                                 startActivity(exitGame);
                             }
                         } else if (sensorEvent.values[2] < -3.0f) {  // clockwise
@@ -306,6 +314,7 @@ public class Game extends AppCompatActivity {
                                 sensorManager.unregisterListener(this);
                                 Intent exitGame = new Intent(Game.this, EndGame.class);
                                 exitGame.putExtra("finalScore", currentScore);
+                                player.pause();
                                 startActivity(exitGame);
 
                             }
@@ -427,6 +436,7 @@ public class Game extends AppCompatActivity {
             else {
                 Intent exitGame = new Intent (Game.this, EndGame.class);
                 exitGame.putExtra("finalScore", currentScore);
+                player.pause();
                 startActivity(exitGame);
             }
         }
@@ -452,6 +462,7 @@ public class Game extends AppCompatActivity {
             else {
                 Intent exitGame = new Intent (Game.this, EndGame.class);
                 exitGame.putExtra("finalScore", currentScore);
+                player.pause();
                 startActivity(exitGame);
             }
         }
@@ -477,6 +488,7 @@ public class Game extends AppCompatActivity {
             else {
                 Intent exitGame = new Intent (Game.this, EndGame.class);
                 exitGame.putExtra("finalScore", currentScore);
+                player.pause();
                 startActivity(exitGame);
             }
         }
@@ -502,6 +514,7 @@ public class Game extends AppCompatActivity {
             else {
                 Intent exitGame = new Intent (Game.this, EndGame.class);
                 exitGame.putExtra("finalScore", currentScore);
+                player.pause();
                 startActivity(exitGame);
             }
         }
@@ -569,6 +582,7 @@ public class Game extends AppCompatActivity {
                 if (responded == false) {
                     Intent exitGame = new Intent (Game.this, EndGame.class);
                     exitGame.putExtra("finalScore", currentScore);
+                    player.pause();
                     startActivity(exitGame);
                 }
             }
