@@ -31,14 +31,14 @@
         android:layout_centerHorizontal="true" />
 
     <TextView
-        android:text="TextView"
+        android:id="@+id/gestureInstruction"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:id="@+id/gestureInstruction"
         android:layout_below="@+id/playTimer"
         android:layout_centerHorizontal="true"
-        android:textSize="18sp" />
+        android:gravity="center"
+        android:text="TextView"
+        android:textSize="40sp" />
 
     <TextView
         android:text="TextView"
