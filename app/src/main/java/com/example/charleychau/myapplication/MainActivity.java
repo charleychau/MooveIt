@@ -16,7 +16,6 @@ public class MainActivity extends AppCompatActivity {
 
     private Button playButton;
     private Button tutorialButton;
-    private Button settingsButton;
 
     private MediaPlayer player;
 
@@ -31,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
 
         playButton = (Button) findViewById(R.id.playButton);
         tutorialButton = (Button) findViewById(R.id.tutorialButton);
-        settingsButton = (Button) findViewById(R.id.settingsButton);
         playButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 Intent playGame = new Intent(MainActivity.this, Game.class);
@@ -43,12 +41,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent tutorial = new Intent(MainActivity.this, Tutorial.class);
                 startActivity(tutorial);
-            }
-        });
-        settingsButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v) {
-                Intent settings = new Intent(MainActivity.this, Settings.class);
-                startActivity(settings);
             }
         });
     }

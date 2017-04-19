@@ -23,7 +23,8 @@ public class EndGame extends AppCompatActivity {
         setContentView(R.layout.activity_end_game);
 
         player = MediaPlayer.create(EndGame.this, R.raw.moo);
-        player.setLooping(false);
+        player.setLooping(true);
+        player.setVolume(1, 1);
         player.start();
 
 
@@ -38,12 +39,14 @@ public class EndGame extends AppCompatActivity {
         playAgainButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 Intent playGame = new Intent(EndGame.this, Game.class);
+                player.pause();
                 startActivity(playGame);
             }
         });
         mainmenuButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 Intent mainmenu = new Intent(EndGame.this, MainActivity.class);
+                player.pause();
                 startActivity(mainmenu);
             }
         });
