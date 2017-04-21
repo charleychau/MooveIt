@@ -8,23 +8,13 @@
     tools:context="com.example.charleychau.myapplication.MainActivity">
 
     <Button
-        android:text="Tutorial"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/tutorialButton"
         style="@android:style/Widget.Material.Button.Colored"
-        android:layout_centerVertical="true"
-        android:layout_alignStart="@+id/playButton" />
-
-    <Button
-        android:text="Settings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/settingsButton"
-        style="@android:style/Widget.Material.Button.Colored"
-        android:layout_below="@+id/tutorialButton"
-        android:layout_alignStart="@+id/tutorialButton"
-        android:layout_marginTop="18dp" />
+        android:text="How to play"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:text="Play!"

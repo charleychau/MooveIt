@@ -1,6 +1,7 @@
 package com.example.charleychau.myapplication;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -14,11 +15,18 @@ public class EndGame extends AppCompatActivity {
     private TextView finalScore;
     private Button playAgainButton;
     private Button mainmenuButton;
+    private MediaPlayer player;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_end_game);
+
+        player = MediaPlayer.create(EndGame.this, R.raw.moo);
+        player.setLooping(true);
+        player.setVolume(1, 1);
+        player.start();
+
 
         finalScore = (TextView) findViewById(R.id.score);
         playAgainButton = (Button) findViewById(R.id.playAgainButton);
@@ -31,12 +39,14 @@ public class EndGame extends AppCompatActivity {
         playAgainButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 Intent playGame = new Intent(EndGame.this, Game.class);
+                player.pause();
                 startActivity(playGame);
             }
         });
         mainmenuButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 Intent mainmenu = new Intent(EndGame.this, MainActivity.class);
+                player.pause();
                 startActivity(mainmenu);
             }
         });
